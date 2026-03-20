@@ -3,8 +3,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.database import Base, engine
 from app.routers import auth, servicios, reservas
 from app.routers import metricas
+import os
 
 Base.metadata.create_all(bind=engine)
+
+origins = [
+    "http://localhost:5173",
+    os.getenv("FRONTEND_URL", ""),   # ← URL de Vercel (se agrega después)
+]
 
 app = FastAPI(
     title="Ven-tos API",
@@ -14,7 +20,8 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[o for o in origins if o],  # filtra strings vacíos
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
