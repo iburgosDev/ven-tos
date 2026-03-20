@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models import Usuario
 from app.schemas import UsuarioRegistro, UsuarioLogin, Token
-from app.auth import hashear_password, verificar_password, crear_token
+from app.auth import hashear_password, verificar_password, crear_token, get_usuario_actual
 
 router = APIRouter(prefix="/auth", tags=["Autenticación"])
 
@@ -39,3 +39,13 @@ def login(datos: UsuarioLogin, db: Session = Depends(get_db)):
 def listar_usuarios(db: Session = Depends(get_db)):
     usuarios = db.query(Usuario).all()
     return [{"id": u.id, "nombre": u.nombre, "email": u.email, "rol": u.rol} for u in usuarios]
+
+@router.get("/me")
+def obtener_perfil(usuario = Depends(get_usuario_actual)):
+    return {
+        "id": usuario.id,
+        "nombre": usuario.nombre,
+        "email": usuario.email,
+        "rol": usuario.rol,
+        "creado_en": usuario.creado_en,
+    }

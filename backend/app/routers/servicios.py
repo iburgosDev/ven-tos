@@ -29,7 +29,10 @@ def mis_servicios(
     db: Session = Depends(get_db),
     usuario = Depends(requiere_rol("talento"))
 ):
-    return db.query(Servicio).filter(Servicio.talento_id == usuario.id).all()
+    return db.query(Servicio).filter(
+        Servicio.talento_id == usuario.id,
+        Servicio.activo == True
+    ).all()
 
 @router.get("/{id}", response_model=ServicioRespuesta)
 def obtener_servicio(id: int, db: Session = Depends(get_db)):
@@ -72,3 +75,22 @@ def eliminar_servicio(
     servicio.activo = False
     db.commit()
     return {"mensaje": f"Servicio '{servicio.titulo}' eliminado"}
+
+"""@router.get("/mis-servicios", response_model=List[ServicioRespuesta])
+def mis_servicios(
+    db: Session = Depends(get_db),
+    usuario = Depends(requiere_rol("talento"))
+):
+    return db.query(Servicio).filter(
+        Servicio.talento_id == usuario.id,
+        Servicio.activo == True      # ← agregar esta línea
+    ).all()"""
+
+@router.get("/{id}/horarios-ocupados")
+def horarios_ocupados(id: int, db: Session = Depends(get_db)):
+    from app.models import Reserva
+    reservas = db.query(Reserva).filter(
+        Reserva.servicio_id == id,
+        Reserva.estado.in_(["pendiente", "confirmada"])
+    ).all()
+    return [{"fecha_hora": r.fecha_hora} for r in reservas]
