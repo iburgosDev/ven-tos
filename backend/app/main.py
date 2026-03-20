@@ -9,6 +9,7 @@ Base.metadata.create_all(bind=engine)
 
 origins = [
     "http://localhost:5173",
+    "https://ven-tos.vercel.app",
     os.getenv("FRONTEND_URL", ""),   # ← URL de Vercel (se agrega después)
 ]
 
