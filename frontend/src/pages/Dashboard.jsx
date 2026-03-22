@@ -83,10 +83,10 @@ export default function Dashboard() {
                     gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
                     gap: 16, marginBottom: 36,
                 }}>
-                    <StatCard label="Servicios activos"      value={metricas.total_servicios}       color="accent"  />
-                    <StatCard label="Reservas totales"       value={metricas.total_reservas}        color="accent"  />
-                    <StatCard label="Pendientes"             value={metricas.reservas_pendientes}   color="warning" />
-                    <StatCard label="Ingresos estimados"     value={`$${metricas.ingresos_estimados.toLocaleString("es-CL")}`} color="success" />
+                    <StatCard label="Servicios activos"  value={metricas.total_servicios}     color="accent"  icon="◈" index={0} />
+                    <StatCard label="Reservas totales"   value={metricas.total_reservas}      color="accent"  icon="◎" index={1} />
+                    <StatCard label="Pendientes"         value={metricas.reservas_pendientes} color="warning" icon="◷" index={2} />
+                    <StatCard label="Ingresos estimados" value={`$${metricas.ingresos_estimados.toLocaleString("es-CL")}`} color="success" icon="◈" index={3} />
                 </div>
             )}
 
