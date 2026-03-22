@@ -241,59 +241,56 @@ function VistaExplorarServicios() {
     return (
         <div>
             <div style={{ marginBottom: 24 }}>
-                <h1 style={{ fontSize: 24, color: "#212529", marginBottom: 4 }}>
+                <h1 style={{ fontSize: 26, fontWeight: 700, color: "var(--text)", letterSpacing: "-0.5px", marginBottom: 4 }}>
                     Servicios disponibles
                 </h1>
-                <p style={{ color: "#6C757D", fontSize: 14 }}>
+                <p style={{ color: "var(--text-2)", fontSize: 14 }}>
                     Explora y reserva el tiempo de un talento
                 </p>
             </div>
 
             {error && (
-                <div style={{ background: "#F8D7DA", color: "#842029", padding: "10px 14px",
-                    borderRadius: 8, fontSize: 14, marginBottom: 16 }}>
+                <div style={{ background: "var(--danger-dim)", color: "var(--danger)", padding: "10px 14px",
+                    borderRadius: "var(--radius)", fontSize: 14, marginBottom: 16, border: "1px solid #F8717130" }}>
                     {error}
                 </div>
             )}
             {exito && (
-                <div style={{ background: "#D1E7DD", color: "#0A3622", padding: "10px 14px",
-                    borderRadius: 8, fontSize: 14, marginBottom: 16 }}>
+                <div style={{ background: "var(--success-dim)", color: "var(--success)", padding: "10px 14px",
+                    borderRadius: "var(--radius)", fontSize: 14, marginBottom: 16 }}>
                     {exito}
                 </div>
             )}
 
             {servicios.length === 0 ? (
-                <div style={{ background: "white", border: "1px solid #DEE2E6",
-                    borderRadius: 12, padding: 40, textAlign: "center", color: "#6C757D" }}>
+                <div style={{ background: "var(--surface)", border: "1px solid var(--border)",
+                    borderRadius: "var(--radius-lg)", padding: 40, textAlign: "center", color: "var(--text-3)" }}>
                     No hay servicios disponibles aún.
                 </div>
             ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                     {servicios.map(s => (
-                        <div key={s.id} style={{ background: "white",
-                            border: "1px solid #DEE2E6", borderRadius: 12, padding: "16px 20px" }}>
+                        <div key={s.id} style={{ background: "var(--surface)",
+                            border: "1px solid var(--border)", borderRadius: "var(--radius-lg)", padding: "16px 20px" }}>
                             <div style={{ display: "flex", justifyContent: "space-between",
                                 alignItems: "flex-start" }}>
                                 <div>
-                                    <p style={{ fontWeight: 600, color: "#212529", marginBottom: 4 }}>
+                                    <p style={{ fontWeight: 600, color: "var(--text)", marginBottom: 4, fontSize: 15 }}>
                                         {s.titulo}
                                     </p>
-                                    <p style={{ fontSize: 13, color: "#6C757D" }}>
+                                    <p style={{ fontSize: 13, color: "var(--text-2)" }}>
                                         {s.duracion_min} min · ${s.precio.toLocaleString("es-CL")}
                                         {s.descripcion && ` · ${s.descripcion}`}
                                     </p>
                                 </div>
-                                <button
-                                    onClick={() => abrirReserva(s.id)}
-                                    style={btnPrimarioEstilo}
-                                >
+                                <button onClick={() => abrirReserva(s.id)} style={btnPrimarioEstilo}>
                                     {reservando === s.id ? "Cancelar" : "Reservar"}
                                 </button>
                             </div>
 
                             {reservando === s.id && (
                                 <div style={{ marginTop: 16, paddingTop: 16,
-                                    borderTop: "1px solid #DEE2E6",
+                                    borderTop: "1px solid var(--border)",
                                     display: "flex", gap: 12, alignItems: "flex-end" }}>
                                     <div style={{ flex: 1 }}>
                                         <label style={labelEstilo}>Fecha y hora</label>
@@ -304,11 +301,11 @@ function VistaExplorarServicios() {
                                             onChange={e => setFechaHora(e.target.value)}
                                             style={{
                                                 ...inputEstilo,
-                                                borderColor: fechaEstaOcupada(fechaHora) ? "#F5C2C7" : "#DEE2E6"
+                                                borderColor: fechaEstaOcupada(fechaHora) ? "var(--danger)" : "var(--border2)"
                                             }}
                                         />
                                         {fechaEstaOcupada(fechaHora) && (
-                                            <p style={{ fontSize: 12, color: "#842029", marginTop: 6 }}>
+                                            <p style={{ fontSize: 12, color: "var(--danger)", marginTop: 6 }}>
                                                 ⚠ Este día ya tiene una reserva activa. Elige otro día.
                                             </p>
                                         )}
@@ -326,7 +323,7 @@ function VistaExplorarServicios() {
                                     </button>
                                 </div>
                             )}
-                        </div>
+                       </div>
                     ))}
                 </div>
             )}
