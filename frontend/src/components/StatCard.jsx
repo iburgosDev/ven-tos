@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react"
-import anime from "animejs"
+import { animate } from "animejs"
 
 export default function StatCard({ label, value, color = "accent", icon = "◈", index = 0 }) {
     const cardRef  = useRef(null)
@@ -16,8 +16,7 @@ export default function StatCard({ label, value, color = "accent", icon = "◈",
 
     useEffect(() => {
         // Animación de entrada: fade + slide up con delay escalonado
-        anime({
-            targets: cardRef.current,
+        animate(cardRef.current, {
             opacity:   [0, 1],
             translateY: [24, 0],
             duration:  500,
@@ -28,14 +27,13 @@ export default function StatCard({ label, value, color = "accent", icon = "◈",
         // Animación de conteo si el valor es número
         if (esNumero) {
             const obj = { val: 0 }
-            anime({
-                targets: obj,
+            animate(obj, {
                 val:      Number(value),
                 duration: 900,
                 delay:    index * 100 + 200,
                 easing:   "easeOutExpo",
                 round:    1,
-                update: () => {
+                onUpdate: () => {
                     if (valueRef.current) {
                         valueRef.current.textContent = Math.round(obj.val).toLocaleString("es-CL")
                     }
