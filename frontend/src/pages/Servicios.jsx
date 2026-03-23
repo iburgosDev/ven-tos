@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { api, getRol } from "../api/client"
+import { useAnimateList } from "../hooks/useAnimateIn"
 
 // Vista para ROL TALENTO: gestión de sus servicios
 function VistaGestionServicios() {
@@ -9,6 +10,7 @@ function VistaGestionServicios() {
     const [mostrarForm, setMostrarForm] = useState(false)
     const [editando, setEditando]   = useState(null)
     const [form, setForm] = useState({ titulo: "", descripcion: "", duracion_min: "", precio: "" })
+    const listaRef = useAnimateList([servicios])
 
     useEffect(() => { cargar() }, [])
 
@@ -130,7 +132,7 @@ function VistaGestionServicios() {
                     No tienes servicios aún. ¡Crea el primero!
                 </div>
             ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                <div ref={listaRef} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                     {servicios.map(s => (
                         <div key={s.id} style={{
                             background: "var(--surface)", border: "1px solid var(--border)",
@@ -161,6 +163,7 @@ function VistaGestionServicios() {
         </div>
     )
 }
+
 // Vista para ROL CLIENTE: explorar y reservar servicios
 function VistaExplorarServicios() {
     const [servicios, setServicios]               = useState([])
@@ -170,6 +173,7 @@ function VistaExplorarServicios() {
     const [fechaHora, setFechaHora]               = useState("")
     const [horariosOcupados, setHorariosOcupados] = useState([])
     const [exito, setExito]                       = useState(null)
+    const listaRef = useAnimateList([servicios])
 
     useEffect(() => { cargar() }, [])
 
@@ -203,9 +207,7 @@ function VistaExplorarServicios() {
 
     function fechaEstaOcupada(fechaSeleccionada) {
         if (!fechaSeleccionada) return false
-        // Extrae solo la fecha (YYYY-MM-DD) de la selección
         const diaSeleccionado = fechaSeleccionada.slice(0, 10)
-        // Compara contra todos los días ocupados
         return horariosOcupados.some(h => {
             const diaOcupado = new Date(h).toISOString().slice(0, 10)
             return diaOcupado === diaSeleccionado
@@ -236,7 +238,7 @@ function VistaExplorarServicios() {
         }
     }
 
-    if (cargando) return <p style={{ color: "#6C757D" }}>Cargando servicios...</p>
+    if (cargando) return <p style={{ color: "var(--text-2)", fontSize: 14 }}>Cargando servicios...</p>
 
     return (
         <div>
@@ -268,12 +270,11 @@ function VistaExplorarServicios() {
                     No hay servicios disponibles aún.
                 </div>
             ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <div ref={listaRef} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                     {servicios.map(s => (
                         <div key={s.id} style={{ background: "var(--surface)",
                             border: "1px solid var(--border)", borderRadius: "var(--radius-lg)", padding: "16px 20px" }}>
-                            <div style={{ display: "flex", justifyContent: "space-between",
-                                alignItems: "flex-start" }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                                 <div>
                                     <p style={{ fontWeight: 600, color: "var(--text)", marginBottom: 4, fontSize: 15 }}>
                                         {s.titulo}
@@ -323,7 +324,7 @@ function VistaExplorarServicios() {
                                     </button>
                                 </div>
                             )}
-                       </div>
+                        </div>
                     ))}
                 </div>
             )}

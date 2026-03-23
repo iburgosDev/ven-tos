@@ -1,12 +1,15 @@
 import { useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
 import { api } from "../api/client"
+import { useAnimateIn } from "../hooks/useAnimateIn"
 
 export default function Login() {
     const [email, setEmail]       = useState("")
     const [password, setPassword] = useState("")
     const [error, setError]       = useState(null)
     const [cargando, setCargando] = useState(false)
+    const panelIzqRef  = useAnimateIn({ duration: 600 })
+    const formularioRef = useAnimateIn({ duration: 600, delay: 150 })
     const navigate = useNavigate()
 
     async function handleSubmit(e) {
@@ -31,8 +34,9 @@ export default function Login() {
             background: "var(--bg)",
         }}>
             {/* Panel izquierdo decorativo */}
-            <div style={{
+            <div ref={panelIzqRef} style={{
                 width: "45%", background: "var(--surface)",
+                opacity: 0,
                 borderRight: "1px solid var(--border)",
                 display: "flex", flexDirection: "column",
                 justifyContent: "center", padding: "60px",
@@ -65,11 +69,8 @@ export default function Login() {
             </div>
 
             {/* Panel derecho — formulario */}
-            <div style={{
-                flex: 1, display: "flex", alignItems: "center",
-                justifyContent: "center", padding: "40px",
-            }}>
-                <div style={{ width: "100%", maxWidth: 380 }}>
+            <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "40px" }}>
+                <div ref={formularioRef} style={{ width: "100%", maxWidth: 380, opacity: 0}}>
                     <h2 style={{ fontSize: 24, fontWeight: 700, color: "var(--text)",
                         letterSpacing: "-0.4px", marginBottom: 8 }}>
                         Ingresar

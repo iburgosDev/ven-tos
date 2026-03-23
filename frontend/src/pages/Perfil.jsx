@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react"
 import { api } from "../api/client"
+import { useAnimateIn } from "../hooks/useAnimateIn"
 
 export default function Perfil() {
     const [usuario, setUsuario]   = useState(null)
     const [cargando, setCargando] = useState(true)
     const [error, setError]       = useState(null)
+    const cardRef = useAnimateIn({ duration: 600 })
 
     useEffect(() => {
         api.get("/auth/me")
@@ -21,7 +23,7 @@ export default function Perfil() {
         </div>
     )
 
-    const inicial = usuario.nombre.charAt(0).toUpperCase()
+    const inicial   = usuario.nombre.charAt(0).toUpperCase()
     const esTalento = usuario.rol === "talento"
 
     return (
@@ -36,11 +38,12 @@ export default function Perfil() {
                 </p>
             </div>
 
-            <div style={{
+            <div ref={cardRef} style={{
                 background: "var(--surface)",
                 border: "1px solid var(--border)",
                 borderRadius: "var(--radius-lg)",
                 padding: 36, maxWidth: 500,
+                opacity: 0,
             }}>
                 {/* Avatar */}
                 <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 36 }}>
@@ -73,8 +76,8 @@ export default function Perfil() {
                 {/* Datos */}
                 <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
                     {[
-                        { label: "Email", value: usuario.email },
-                        { label: "Rol", value: usuario.rol },
+                        { label: "Email",         value: usuario.email },
+                        { label: "Rol",           value: usuario.rol },
                         { label: "Miembro desde", value: new Date(usuario.creado_en).toLocaleDateString("es-CL", {
                             day: "2-digit", month: "long", year: "numeric"
                         })},

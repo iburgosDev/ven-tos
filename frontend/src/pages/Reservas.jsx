@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { api, getRol } from "../api/client"
 import EstadoBadge from "../components/EstadoBadge"
+import { useAnimateList } from "../hooks/useAnimateIn"
 
 export default function Reservas() {
     const [reservas, setReservas]   = useState([])
@@ -8,6 +9,7 @@ export default function Reservas() {
     const [error, setError]         = useState(null)
     const [filtro, setFiltro]       = useState("todas")
     const rol                       = getRol()
+    const listaRef = useAnimateList([reservas, filtro])
 
     useEffect(() => { cargar() }, [])
 
@@ -94,7 +96,7 @@ export default function Reservas() {
                     No hay reservas {filtro !== "todas" ? `con estado "${filtro}"` : "aún"}.
                 </div>
             ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                <div ref={listaRef} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                     {reservasFiltradas.map(r => (
                         <div key={r.id} style={{
                             background: "var(--surface)",

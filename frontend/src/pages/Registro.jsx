@@ -1,11 +1,13 @@
 import { useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
 import { api } from "../api/client"
+import { useAnimateIn } from "../hooks/useAnimateIn"
 
 export default function Registro() {
     const [form, setForm] = useState({ nombre: "", email: "", password: "", rol: "cliente" })
     const [error, setError]       = useState(null)
     const [cargando, setCargando] = useState(false)
+    const cardRef = useAnimateIn({ duration: 600 })
     const navigate = useNavigate()
 
     function handleChange(e) { setForm({ ...form, [e.target.name]: e.target.value }) }
@@ -32,12 +34,13 @@ export default function Registro() {
             alignItems: "center", justifyContent: "center",
             background: "var(--bg)",
         }}>
-            <div style={{
+            <div ref={cardRef} style={{
                 background: "var(--surface)",
                 border: "1px solid var(--border)",
                 borderRadius: "var(--radius-lg)",
                 padding: "40px 48px",
                 width: "100%", maxWidth: 420,
+                opacity: 0,
             }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 32 }}>
                     <div style={{
